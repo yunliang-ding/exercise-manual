@@ -1,5 +1,6 @@
 import * as React from "react"
 import { observer, inject } from 'mobx-react'
+import { getMonaco } from '../../tools/index'
 import './index.less'
 @inject('UI')
 @observer
@@ -8,14 +9,23 @@ class Content extends React.Component<any, any> {
   constructor(props) {
     super(props)
   }
+  createModel = async () => {
+    const monaco:any = await getMonaco()
+    monaco.editor.create(document.querySelector('.app-content'), {
+      value: [
+        'function x() {',
+        '\tconsole.log("Hello world!");',
+        '}'
+      ].join('\n'),
+      language: 'javascript',
+      theme: 'vs-dark'
+    })
+  }
+  componentDidMount() {
+    this.createModel()
+  }
   render() {
     return <div className='app-content'>
-      <div style={{display: 'flex', alignItems: 'center', flexDirection: 'column'}}>
-        <img src='/static/image/icon.svg' style={{height: 200}} />
-        <div style={{textAlign: 'center', color: '#444', fontSize: 20, fontWeight: 800, marginTop: 20}}>
-          react 后台管理模版 (深色主题)
-        </div>
-      </div>
     </div>
   }
 }
