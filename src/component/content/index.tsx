@@ -13,12 +13,20 @@ class Content extends React.Component<any, any> {
     const monaco:any = await getMonaco()
     monaco.editor.create(document.querySelector('.app-content'), {
       value: [
-        'function x() {',
+        'function start() {',
         '\tconsole.log("Hello world!");',
         '}'
       ].join('\n'),
       language: 'javascript',
-      theme: 'vs-dark'
+      theme: 'vs-dark',
+      selectOnLineNumbers: true,
+      automaticLayout: true,
+      fontSize: 12,
+      tabSize: 2,
+      fontWeight: "400",
+      minimap: {
+        enabled: false
+      }
     })
   }
   componentDidMount() {
