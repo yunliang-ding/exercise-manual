@@ -37,13 +37,14 @@ class Header extends React.Component<any, any> {
           <i className='diaryfont diary-jia' onClick={
             () => {
               setVisible(true)
-              this.props.UI.setTask({
+              this.props.UI.setTopic({
                 id: null,
-                name: '',
-                status: 0,
-                level: 3,
-                start_time: '',
-                end_time: ''
+                content: '', // 描述
+                level: '', // 难度系数
+                type: '', // 分类
+                url: '', // 参考链接地址
+                code: '', //  答题代码
+                remake: '' // 评论
               })
             }
           }></i>

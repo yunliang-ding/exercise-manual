@@ -98,12 +98,20 @@ class Content extends React.Component<any, any> {
         return [<Button
           onClick={
             () => {
+            }
+          }
+          style={{ width: 80, marginRight: 10 }}
+          label='试一试'
+          type='primary'
+        />, <Button
+          onClick={
+            () => {
               this.props.UI.setVisible(true)
               this.props.UI.setTopic({ ...record }) // deep
             }
           }
           style={{ width: 80, marginRight: 10 }}
-          label='试一试'
+          label='修改'
           type='primary'
         />, <Button
           onClick={
@@ -113,7 +121,7 @@ class Content extends React.Component<any, any> {
             }
           }
           style={{ width: 80, marginRight: 10 }}
-          label='参看解析'
+          label='解析'
           type='primary'
         />]
       }

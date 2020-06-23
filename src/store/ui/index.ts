@@ -1,6 +1,17 @@
 import { observable, action, runInAction } from 'mobx'
 import { post, get } from '../../axios/index'
 import { Message } from 'react-ryui'
+import { getMonaco } from '../../tools/index'
+const option: any = {
+  selectOnLineNumbers: true,
+  automaticLayout: true,
+  fontSize: 12,
+  tabSize: 2,
+  fontWeight: "400",
+  minimap: {
+    enabled: false
+  }
+}
 const message = new Message({
   duration: 3,
   dark: true
@@ -11,8 +22,8 @@ class UI {
   @observable topic = {
     id: null,
     content: '', // 描述
-    level: 1, // 难度系数
-    type: 0, // 分类
+    level: '', // 难度系数
+    type: '', // 分类
     url: '', // 参考链接地址
     code: '', //  答题代码
     remake: '' // 评论
@@ -116,6 +127,22 @@ class UI {
   }
   @action clearTopicList = () => {
     this.topicList = []
+  }
+  /**
+    编辑器相关
+   */
+  @observable monaco;
+  @action initMonaco = async () => {
+    this.monaco = await getMonaco()
+  }
+  /**
+   * 负责一个文件打开之后 所有 Monaco初始化的工作
+   */
+  @action MonacoInit = (dom, options, onChange): void => {
+    let editorMonaco: any = this.monaco.editor.create(dom, Object.assign(options, option))
+    editorMonaco.onDidChangeModelContent(() => { // onChange 事件
+      onChange(editorMonaco.getValue())
+    })
   }
 }
 const ui = new UI()

@@ -9,6 +9,9 @@ class Layout extends React.Component<any, any> {
   constructor(props) {
     super(props)
   }
+  componentDidMount(){
+    this.props.UI.initMonaco()
+  }
   render() {
     return <div className='app-layout'>
       <Header />

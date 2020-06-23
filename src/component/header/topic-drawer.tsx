@@ -1,6 +1,7 @@
 import * as React from 'react'
 import { observer, inject } from 'mobx-react'
 import { Input, Select } from 'react-ryui'
+import { Monaco } from '../monaco/index'
 import './index.less'
 @inject('UI')
 @observer
@@ -21,7 +22,8 @@ class TopicDrawer extends React.Component<any, any> {
         id
       },
       setTopicByKey,
-      typeList
+      typeList,
+      monaco
     } = this.props.UI
     return <div className='app-drawer-box'>
       <div className='app-drawer-box-item'>
@@ -35,13 +37,13 @@ class TopicDrawer extends React.Component<any, any> {
             placeholder='请选择'
             dataList={[{
               label: '简单',
-              value: 3
+              value: 1
             }, {
               label: '一般',
               value: 2
             }, {
               label: '复杂',
-              value: 1
+              value: 3
             }]}
             value={level}
             onChange={
@@ -73,27 +75,10 @@ class TopicDrawer extends React.Component<any, any> {
       </div>
       <div className='app-drawer-box-item'>
         <div className='app-drawer-box-item-left'>
-          题目描述
-        </div>
-        <div className='app-drawer-box-item-right'>
-          {content}
-        </div>
-      </div>
-      <div className='app-drawer-box-item'>
-        <div className='app-drawer-box-item-left'>
-          题目解析
-        </div>
-        <div className='app-drawer-box-item-right'>
-          {code}
-        </div>
-      </div>
-      <div className='app-drawer-box-item'>
-        <div className='app-drawer-box-item-left'>
           参考链接
         </div>
         <div className='app-drawer-box-item-right'>
           <Input
-            type='textArea'
             dark
             value={url}
             onChange={
@@ -104,26 +89,39 @@ class TopicDrawer extends React.Component<any, any> {
           />
         </div>
       </div>
-      {
-        id !== null && <div className='app-drawer-box-item'>
-          <div className='app-drawer-box-item-left'>
-            任务评论
-          </div>
-          <div className='app-drawer-box-item-right'>
-            <Input
-              type='textArea'
-              dark
-              value={remake}
-              onChange={
-                (e) => {
-                  setTopicByKey('remake', e.target.value)
-                }
-              }
-            />
-          </div>
+      <div className='app-drawer-box-item'>
+        <div className='app-drawer-box-item-left'>
+          题目描述
         </div>
-      }
-
+        <div className='app-drawer-box-item-right'>
+          <Input
+            dark
+            value={content}
+            onChange={
+              (e) => {
+                setTopicByKey('content', e.target.value)
+              }
+            }
+          />
+        </div>
+      </div>
+      <div className='app-drawer-box-item' style={{height: 'calc(100% - 180px)'}}>
+        <div className='app-drawer-box-item-left'>
+          代码段
+        </div>
+        <div className='app-drawer-box-item-right'>
+          <Monaco
+            theme='vs-dark'
+            language={'javascript'}
+            value={code}
+            onChange={
+              (e) => {
+                setTopicByKey('code', e)
+              }
+            }
+          />
+        </div>
+      </div>
     </div>
   }
 }
