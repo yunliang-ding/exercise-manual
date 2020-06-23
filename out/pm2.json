@@ -1,7 +1,19 @@
 {
   "apps": [
     {
-      "name": "react-pc-template",
+      "name": "cloud-topic.backend",
+      "script": "backend/www/production.js",
+      "ignore-watch": "node_modules",
+      "exec_mode": "cluster",
+      "instances": "1",
+      "autorestart": true,
+      "max_memory_restart": "1G",
+      "log_date_format": "YYYY-MM-DD HH:mm Z",
+      "out_file": "log/backend.stdout.log",
+      "error_file": "log/backend.error.log"
+    },
+    {
+      "name": "cloud-topic.frontend",
       "script": "server.js",
       "ignore-watch": "node_modules",
       "exec_mode": "cluster",

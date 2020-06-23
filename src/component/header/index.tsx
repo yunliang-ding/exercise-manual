@@ -51,7 +51,7 @@ class Header extends React.Component<any, any> {
         </Tooltip>
       </div>
       <Drawer
-        title={topic.id ? '编辑任务' : '新增任务'}
+        title={topic.id ? '编辑习题' : '新增习题'}
         closable
         dark
         mask

@@ -1,0 +1,41 @@
+{
+    "version": 3,
+    "sources": [
+        "../../../src/home/controller/topic.js"
+    ],
+    "names": [
+        "saveorupdateAction",
+        "topicEntity",
+        "post",
+        "id",
+        "model",
+        "where",
+        "update",
+        "affectedRows",
+        "json",
+        "code",
+        "add",
+        "insertId",
+        "error",
+        "listAction",
+        "get",
+        "type",
+        "level",
+        "order",
+        "JSON",
+        "parse",
+        "page",
+        "countSelect",
+        "data",
+        "getAction",
+        "find",
+        "deleteAction",
+        "delete",
+        "Base"
+    ],
+    "mappings": "AAAA;;;;;;;;;;;;;;;;;;;;;;;;AAEA;;;;;;;;;;;;;;AAGE;;;;mBAIMA,kB;;;;;;;;AAEIC,yB,GAAc,KAAKC,IAAL,E;AACdC,gB,GAAOF,W,CAAPE,E;;mBACFA,E;;;;;;qBACuB,KAAKC,KAAL,CAAW,OAAX,EAAoBC,KAApB,CAA0B,EAAEF,MAAF,EAA1B,EAAkCG,MAAlC,CAAyCL,WAAzC,C;;;AAArBM,0B;;AACJ,mBAAKC,IAAL,CAAU;AACRC,sBAAM,GADE;AAERF;AAFQ,eAAV;;;;;;qBAKqB,KAAKH,KAAL,CAAW,OAAX,EAAoBM,GAApB,CAAwBT,WAAxB,C;;;AAAjBU,sB;;AACJ,mBAAKH,IAAL,CAAU;AACRC,sBAAM,GADE;AAERE;AAFQ,eAAV;;;;;;;;;;AAMF,mBAAKH,IAAL,CAAU;AACRC,sBAAM,GADE;AAERG;AAFQ,eAAV;;;;;;;;;;;;;;;;;mBAMEC,U;;;;;;;;AAEER,mB,GAAQ,E;;AACZ,kBAAI,KAAKS,GAAL,CAAS,MAAT,MAAqB,IAAzB,EAA+B;AAC7BT,sBAAMU,IAAN,GAAa,KAAKD,GAAL,CAAS,MAAT,CAAb;AACD;AACD,kBAAI,KAAKA,GAAL,CAAS,OAAT,MAAsB,IAA1B,EAAgC;AAC9BT,sBAAMW,KAAN,GAAc,KAAKF,GAAL,CAAS,OAAT,CAAd;AACD;AACGG,mB,GAAQ,EAAEd,IAAI,MAAN,E;;AACZ,kBAAI,KAAKW,GAAL,CAAS,OAAT,CAAJ,EAAuB;AACrBG,wBAAQC,KAAKC,KAAL,CAAW,KAAKL,GAAL,CAAS,OAAT,CAAX,CAAR;AACD;;qBACgB,KAAKV,KAAL,CAAW,OAAX,EAAoBC,KAApB,CAA0BA,KAA1B,EAAiCe,IAAjC,CAAsC,KAAKN,GAAL,CAAS,SAAT,CAAtC,EAA2D,KAAKA,GAAL,CAAS,UAAT,CAA3D,EAAiFG,KAAjF,CAAuFA,KAAvF,EAA8FI,WAA9F,E;;;AAAbC,kB;;AACJ,mBAAKd,IAAL,CAAU;AACRC,sBAAM,GADE;AAERa;AAFQ,eAAV;;;;;;;;AAKA,mBAAKd,IAAL,CAAU;AACRC,sBAAM,GADE;AAERG;AAFQ,eAAV;;;;;;;;;;;;;;;;;mBAMEW,S;;;;;;;;;qBAEe,KAAKnB,KAAL,CAAW,OAAX,EAAoBC,KAApB,CAA0B,EAAEF,IAAI,KAAKW,GAAL,CAAS,IAAT,CAAN,EAA1B,EAAkDU,IAAlD,E;;;AAAbF,kB;;AACJ,mBAAKd,IAAL,CAAU;AACRC,sBAAM,GADE;AAERa;AAFQ,eAAV;;;;;;;;AAKA,mBAAKd,IAAL,CAAU;AACRC,sBAAM,GADE;AAERG;AAFQ,eAAV;;;;;;;;;;;;;;;;;mBAMEa,Y;;;;;;;;;qBAEuB,KAAKrB,KAAL,CAAW,OAAX,EAAoBC,KAApB,CAA0B,EAAEF,IAAI,KAAKD,IAAL,CAAU,IAAV,CAAN,EAA1B,EAAmDwB,MAAnD,E;;;AAArBnB,0B;;AACJ,mBAAKC,IAAL,CAAU;AACRC,sBAAM,GADE;AAERF;AAFQ,eAAV;;;;;;;;AAKA,mBAAKC,IAAL,CAAU;AACRC,sBAAM,GADE;AAERG;AAFQ,eAAV;;;;;;;;;;;;;;;;;;EA5EuBe,c",
+    "file": "../../../src/home/controller/topic.js",
+    "sourcesContent": [
+        "'use strict';\n\nimport Base from './base.js';\n\nexport default class extends Base {\n  /**\n   * index action\n   * @return {Promise} []\n   */\n  async saveorupdateAction() {\n    try {\n      const topicEntity = this.post()\n      let { id } = topicEntity\n      if (id) { // update\n        let affectedRows = await this.model('topic').where({ id }).update(topicEntity);\n        this.json({\n          code: 200,\n          affectedRows\n        })\n      } else { // new\n        let insertId = await this.model('topic').add(topicEntity)\n        this.json({\n          code: 200,\n          insertId\n        })\n      }\n    } catch (error) {\n      this.json({\n        code: 500,\n        error\n      })\n    }\n  }\n  async listAction() {\n    try {\n      let where = {}\n      if (this.get('type') !== '-1') {\n        where.type = this.get('type')\n      }\n      if (this.get('level') !== '-1') {\n        where.level = this.get('level')\n      }\n      let order = { id: 'desc' }\n      if (this.get('order')) {\n        order = JSON.parse(this.get('order'))\n      }\n      let data = await this.model('topic').where(where).page(this.get('current'), this.get('pageSize')).order(order).countSelect()\n      this.json({\n        code: 200,\n        data\n      })\n    } catch (error) {\n      this.json({\n        code: 500,\n        error\n      })\n    }\n  }\n  async getAction() {\n    try {\n      let data = await this.model('topic').where({ id: this.get('id') }).find()\n      this.json({\n        code: 200,\n        data\n      })\n    } catch (error) {\n      this.json({\n        code: 500,\n        error\n      })\n    }\n  }\n  async deleteAction() {\n    try {\n      let affectedRows = await this.model('topic').where({ id: this.post('id') }).delete()\n      this.json({\n        code: 200,\n        affectedRows\n      })\n    } catch (error) {\n      this.json({\n        code: 500,\n        error\n      })\n    }\n  }\n}"
+    ]
+}
