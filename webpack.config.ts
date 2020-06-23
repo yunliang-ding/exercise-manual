@@ -83,7 +83,7 @@ const config = {
     contentBase: './www',
     proxy: [{
       context: ['/api'],
-      target: `http://${getIPAdress()}:8360`,
+      target: `http://${getIPAdress()}:8092`,
       pathRewrite: { '^/api': '' },
       changeOrigin: true,
       secure: true
